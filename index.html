@@ -1,0 +1,545 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aryavart.AI - Where Ancient India Meets Artificial Intelligence</title>
+    <style>
+        /* Inline CSS for maximum compatibility */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Georgia', serif;
+            background: linear-gradient(135deg, #1a0e0a 0%, #2d1810 100%);
+            color: #f4e4bc;
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Navigation */
+        .navbar {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background: rgba(26, 14, 10, 0.95);
+            z-index: 1000;
+            padding: 1rem 0;
+            border-bottom: 1px solid #d4af37;
+        }
+
+        .nav-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        .logo {
+            font-size: 1.8rem;
+            font-weight: bold;
+            color: #d4af37;
+            text-decoration: none;
+        }
+
+        .nav-menu {
+            display: flex;
+            list-style: none;
+            gap: 2rem;
+        }
+
+        .nav-link {
+            color: #f4e4bc;
+            text-decoration: none;
+            padding: 0.5rem 1rem;
+            border-radius: 5px;
+            transition: all 0.3s ease;
+        }
+
+        .nav-link:hover,
+        .nav-link.active {
+            background: #d4af37;
+            color: #1a0e0a;
+        }
+
+        .hamburger {
+            display: none;
+            flex-direction: column;
+            cursor: pointer;
+        }
+
+        .bar {
+            width: 25px;
+            height: 3px;
+            background: #d4af37;
+            margin: 3px 0;
+            transition: 0.3s;
+        }
+
+        /* Hero Section */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            padding: 100px 0 50px;
+            text-align: center;
+        }
+
+        .hero-content {
+            width: 100%;
+        }
+
+        .hero-title {
+            font-size: 4rem;
+            color: #d4af37;
+            margin-bottom: 1rem;
+            text-shadow: 0 0 20px rgba(212, 175, 55, 0.3);
+        }
+
+        .hero-subtitle {
+            font-size: 1.5rem;
+            color: #f4e4bc;
+            margin-bottom: 2rem;
+            opacity: 0.9;
+        }
+
+        .hero-description {
+            font-size: 1.2rem;
+            margin-bottom: 3rem;
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .hero-buttons {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            padding: 1rem 2rem;
+            border: none;
+            border-radius: 50px;
+            font-size: 1.1rem;
+            text-decoration: none;
+            display: inline-block;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #d4af37 0%, #b8941f 100%);
+            color: #1a0e0a;
+        }
+
+        .btn-secondary {
+            background: transparent;
+            color: #d4af37;
+            border: 2px solid #d4af37;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+        }
+
+        .btn-secondary:hover {
+            background: #d4af37;
+            color: #1a0e0a;
+        }
+
+        /* Features Section */
+        .features {
+            padding: 80px 0;
+            background: rgba(244, 228, 188, 0.05);
+        }
+
+        .section-title {
+            font-size: 3rem;
+            text-align: center;
+            color: #d4af37;
+            margin-bottom: 3rem;
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2rem;
+        }
+
+        .feature-card {
+            background: rgba(244, 228, 188, 0.1);
+            padding: 2rem;
+            border-radius: 15px;
+            text-align: center;
+            border: 1px solid rgba(212, 175, 55, 0.2);
+            transition: all 0.3s ease;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-5px);
+            background: rgba(244, 228, 188, 0.15);
+        }
+
+        .feature-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+
+        .feature-card h3 {
+            color: #d4af37;
+            margin-bottom: 1rem;
+            font-size: 1.4rem;
+        }
+
+        .feature-card p {
+            margin-bottom: 1.5rem;
+            opacity: 0.9;
+        }
+
+        .feature-link {
+            color: #d4af37;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        .feature-link:hover {
+            color: #ff8c42;
+        }
+
+        /* Footer */
+        .footer {
+            background: #1a0e0a;
+            padding: 2rem 0;
+            text-align: center;
+            border-top: 1px solid rgba(212, 175, 55, 0.2);
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .hamburger {
+                display: flex;
+            }
+
+            .nav-menu {
+                position: fixed;
+                left: -100%;
+                top: 70px;
+                flex-direction: column;
+                background: rgba(26, 14, 10, 0.95);
+                width: 100%;
+                text-align: center;
+                transition: 0.3s;
+                padding: 2rem 0;
+            }
+
+            .nav-menu.active {
+                left: 0;
+            }
+
+            .nav-menu li {
+                margin: 1rem 0;
+            }
+
+            .hero-title {
+                font-size: 2.5rem;
+            }
+
+            .hero-subtitle {
+                font-size: 1.2rem;
+            }
+
+            .hero-buttons {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .features-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Animation */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .fade-in {
+            animation: fadeInUp 0.6s ease-out;
+        }
+
+        /* Loading indicator */
+        .loading {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid rgba(212, 175, 55, 0.3);
+            border-radius: 50%;
+            border-top-color: #d4af37;
+            animation: spin 1s ease-in-out infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        /* Status indicator */
+        .status {
+            position: fixed;
+            top: 80px;
+            right: 20px;
+            padding: 1rem;
+            border-radius: 10px;
+            color: white;
+            font-weight: bold;
+            z-index: 2000;
+            display: none;
+        }
+
+        .status.success {
+            background: #355e3b;
+        }
+
+        .status.error {
+            background: #8b1538;
+        }
+
+        .status.info {
+            background: #d4af37;
+            color: #1a0e0a;
+        }
+    </style>
+</head>
+<body>
+    <div class="status" id="status"></div>
+
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="index.html" class="logo">Aryavart.AI</a>
+            <ul class="nav-menu" id="navMenu">
+                <li><a href="index.html" class="nav-link active">Home</a></li>
+                <li><a href="ask.html" class="nav-link">Ask the Rishis</a></li>
+                <li><a href="paths.html" class="nav-link">Paths of Knowledge</a></li>
+                <li><a href="scrolls.html" class="nav-link">Scrolls</a></li>
+                <li><a href="quests.html" class="nav-link">Quests</a></li>
+            </ul>
+            <div class="hamburger" id="hamburger">
+                <span class="bar"></span>
+                <span class="bar"></span>
+                <span class="bar"></span>
+            </div>
+        </div>
+    </nav>
+
+    <main>
+        <section class="hero">
+            <div class="container">
+                <div class="hero-content fade-in">
+                    <h1 class="hero-title">Aryavart.AI</h1>
+                    <p class="hero-subtitle">Where Ancient India Meets Artificial Intelligence</p>
+                    <p class="hero-description">
+                        Explore forgotten wisdom, rediscover ancient stories, and interact with India's timeless knowledge through the lens of modern artificial intelligence.
+                    </p>
+                    <div class="hero-buttons">
+                        <a href="ask.html" class="btn btn-primary">Explore Wisdom</a>
+                        <a href="paths.html" class="btn btn-secondary">Journey Through Time</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="features">
+            <div class="container">
+                <h2 class="section-title">Discover the Treasures</h2>
+                <div class="features-grid">
+                    <div class="feature-card fade-in">
+                        <div class="feature-icon">🧘‍♂️</div>
+                        <h3>Ask the Rishis</h3>
+                        <p>Seek wisdom from ancient sages through our AI-powered interface</p>
+                        <a href="ask.html" class="feature-link">Begin Your Quest →</a>
+                    </div>
+                    <div class="feature-card fade-in">
+                        <div class="feature-icon">⏳</div>
+                        <h3>Paths of Knowledge</h3>
+                        <p>Journey through different eras of Indian intellectual history</p>
+                        <a href="paths.html" class="feature-link">Explore Timeline →</a>
+                    </div>
+                    <div class="feature-card fade-in">
+                        <div class="feature-icon">📚</div>
+                        <h3>Wisdom Scrolls</h3>
+                        <p>Dive deep into categorized ancient knowledge and teachings</p>
+                        <a href="scrolls.html" class="feature-link">Read Scrolls →</a>
+                    </div>
+                    <div class="feature-card fade-in">
+                        <div class="feature-icon">🎯</div>
+                        <h3>Sacred Quests</h3>
+                        <p>Test your knowledge with interactive games and challenges</p>
+                        <a href="quests.html" class="feature-link">Start Quest →</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="footer">
+        <div class="container">
+            <p>&copy; 2025 Aryavart.AI - Bridging Ancient Wisdom and Modern Intelligence</p>
+        </div>
+    </footer>
+
+    <script>
+        // Vanilla JavaScript for maximum compatibility
+        console.log('🚀 Aryavart.AI Loading...');
+
+        // Mobile menu toggle
+        function initializeNavigation() {
+            const hamburger = document.getElementById('hamburger');
+            const navMenu = document.getElementById('navMenu');
+            
+            if (hamburger && navMenu) {
+                hamburger.addEventListener('click', function() {
+                    navMenu.classList.toggle('active');
+                    hamburger.classList.toggle('active');
+                });
+
+                // Close menu when clicking on links
+                const navLinks = document.querySelectorAll('.nav-link');
+                navLinks.forEach(function(link) {
+                    link.addEventListener('click', function() {
+                        navMenu.classList.remove('active');
+                        hamburger.classList.remove('active');
+                    });
+                });
+            }
+        }
+
+        // Show status messages
+        function showStatus(message, type) {
+            const status = document.getElementById('status');
+            if (status) {
+                status.textContent = message;
+                status.className = 'status ' + type;
+                status.style.display = 'block';
+                
+                setTimeout(function() {
+                    status.style.display = 'none';
+                }, 3000);
+            }
+        }
+
+        // Animate elements on scroll
+        function initializeAnimations() {
+            const observer = new IntersectionObserver(function(entries) {
+                entries.forEach(function(entry) {
+                    if (entry.isIntersecting) {
+                        entry.target.style.opacity = '1';
+                        entry.target.style.transform = 'translateY(0)';
+                    }
+                });
+            });
+
+            const fadeElements = document.querySelectorAll('.fade-in');
+            fadeElements.forEach(function(el) {
+                el.style.opacity = '0';
+                el.style.transform = 'translateY(30px)';
+                el.style.transition = 'all 0.6s ease-out';
+                observer.observe(el);
+            });
+        }
+
+        // Test all features
+        function testFeatures() {
+            console.log('🧪 Testing features...');
+            
+            const tests = {
+                navigation: !!document.getElementById('hamburger'),
+                status: !!document.getElementById('status'),
+                links: document.querySelectorAll('.nav-link').length > 0,
+                buttons: document.querySelectorAll('.btn').length > 0
+            };
+            
+            console.log('Test results:', tests);
+            
+            const allWorking = Object.values(tests).every(function(test) { return test; });
+            
+            if (allWorking) {
+                showStatus('✅ All features working!', 'success');
+                console.log('✅ All features working!');
+            } else {
+                showStatus('⚠️ Some features may not work', 'error');
+                console.log('⚠️ Some features may not work');
+            }
+        }
+
+        // Initialize everything when page loads
+        function initialize() {
+            try {
+                console.log('🚀 Initializing Aryavart.AI...');
+                
+                initializeNavigation();
+                initializeAnimations();
+                
+                // Test after a short delay
+                setTimeout(testFeatures, 1000);
+                
+                console.log('✅ Aryavart.AI initialized successfully!');
+                showStatus('Welcome to Aryavart.AI! 🕉️', 'success');
+                
+            } catch (error) {
+                console.error('❌ Initialization error:', error);
+                showStatus('Error loading page. Please refresh.', 'error');
+            }
+        }
+
+        // Multiple initialization methods for maximum compatibility
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', initialize);
+        } else {
+            initialize();
+        }
+
+        // Fallback initialization
+        setTimeout(initialize, 500);
+        window.addEventListener('load', initialize);
+
+        // Error handling
+        window.addEventListener('error', function(e) {
+            console.error('Page error:', e.error);
+            showStatus('An error occurred. Please refresh the page.', 'error');
+        });
+
+        // Debug info
+        setTimeout(function() {
+            console.log('=== DEBUG INFO ===');
+            console.log('URL:', window.location.href);
+            console.log('User Agent:', navigator.userAgent);
+            console.log('Elements found:', {
+                navbar: !!document.querySelector('.navbar'),
+                hero: !!document.querySelector('.hero'),
+                features: !!document.querySelector('.features'),
+                footer: !!document.querySelector('.footer')
+            });
+        }, 2000);
+    </script>
+</body>
+</html>

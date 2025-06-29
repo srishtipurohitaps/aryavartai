@@ -1,0 +1,584 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Wisdom Scrolls - Aryavart.AI</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Georgia', serif;
+            background: linear-gradient(135deg, #1a0e0a 0%, #2d1810 100%);
+            color: #f4e4bc;
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        .navbar {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background: rgba(26, 14, 10, 0.95);
+            z-index: 1000;
+            padding: 1rem 0;
+            border-bottom: 1px solid #d4af37;
+        }
+
+        .nav-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        .logo {
+            font-size: 1.8rem;
+            font-weight: bold;
+            color: #d4af37;
+            text-decoration: none;
+        }
+
+        .nav-menu {
+            display: flex;
+            list-style: none;
+            gap: 2rem;
+        }
+
+        .nav-link {
+            color: #f4e4bc;
+            text-decoration: none;
+            padding: 0.5rem 1rem;
+            border-radius: 5px;
+            transition: all 0.3s ease;
+        }
+
+        .nav-link:hover,
+        .nav-link.active {
+            background: #d4af37;
+            color: #1a0e0a;
+        }
+
+        .main-content {
+            padding: 120px 0 80px;
+            min-height: 100vh;
+        }
+
+        .page-header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .page-title {
+            font-size: 3.5rem;
+            color: #d4af37;
+            margin-bottom: 1rem;
+            text-shadow: 0 0 20px rgba(212, 175, 55, 0.3);
+        }
+
+        .page-subtitle {
+            font-size: 1.3rem;
+            opacity: 0.8;
+        }
+
+        .filters-section {
+            margin: 2rem 0;
+            text-align: center;
+        }
+
+        .filter-buttons {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 1rem;
+        }
+
+        .filter-btn {
+            background: rgba(244, 228, 188, 0.1);
+            color: #f4e4bc;
+            border: 1px solid rgba(212, 175, 55, 0.3);
+            padding: 0.8rem 1.5rem;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .filter-btn:hover,
+        .filter-btn.active {
+            background: #d4af37;
+            color: #1a0e0a;
+            border-color: #d4af37;
+        }
+
+        .scrolls-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+
+        .scroll-card {
+            background: rgba(244, 228, 188, 0.1);
+            padding: 2rem;
+            border-radius: 15px;
+            border: 1px solid rgba(212, 175, 55, 0.2);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .scroll-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+        }
+
+        .scroll-category {
+            display: inline-block;
+            background: #d4af37;
+            color: #1a0e0a;
+            padding: 0.3rem 0.8rem;
+            border-radius: 15px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+        }
+
+        .scroll-card h3 {
+            color: #d4af37;
+            margin-bottom: 1rem;
+            font-size: 1.3rem;
+        }
+
+        .scroll-quote {
+            font-style: italic;
+            color: #cd7f32;
+            margin-bottom: 1rem;
+            font-size: 1.1rem;
+        }
+
+        .scroll-summary {
+            opacity: 0.9;
+            line-height: 1.6;
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 2000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+        }
+
+        .modal-content {
+            background: linear-gradient(135deg, #f4e4bc 0%, #e6d3a3 100%);
+            margin: 5% auto;
+            padding: 0;
+            border-radius: 20px;
+            width: 90%;
+            max-width: 800px;
+            max-height: 80vh;
+            overflow-y: auto;
+            color: #2c1810;
+        }
+
+        .close-modal {
+            position: absolute;
+            top: 15px;
+            right: 20px;
+            color: #5d4e37;
+            font-size: 2rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .close-modal:hover {
+            color: #8b1538;
+            transform: scale(1.1);
+        }
+
+        .modal-header {
+            padding: 2rem 2rem 1rem;
+            border-bottom: 1px solid rgba(212, 175, 55, 0.3);
+            position: relative;
+        }
+
+        .modal-header h2 {
+            color: #8b1538;
+            margin-bottom: 0.5rem;
+        }
+
+        .modal-category {
+            display: inline-block;
+            background: #d4af37;
+            color: #1a0e0a;
+            padding: 0.3rem 0.8rem;
+            border-radius: 15px;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+
+        .modal-body {
+            padding: 2rem;
+        }
+
+        .modal-quote {
+            font-style: italic;
+            font-size: 1.3rem;
+            color: #8b1538;
+            margin-bottom: 2rem;
+            text-align: center;
+            padding: 1rem;
+            background: rgba(212, 175, 55, 0.1);
+            border-radius: 10px;
+            border-left: 4px solid #d4af37;
+        }
+
+        .modal-text {
+            line-height: 1.8;
+            margin-bottom: 2rem;
+            white-space: pre-line;
+        }
+
+        .modal-source {
+            font-size: 0.9rem;
+            color: #5d4e37;
+            font-style: italic;
+            text-align: right;
+        }
+
+        .status {
+            position: fixed;
+            top: 80px;
+            right: 20px;
+            padding: 1rem;
+            border-radius: 10px;
+            color: white;
+            font-weight: bold;
+            z-index: 2000;
+            display: none;
+        }
+
+        .status.success { background: #355e3b; }
+        .status.error { background: #8b1538; }
+        .status.info { background: #d4af37; color: #1a0e0a; }
+
+        @media (max-width: 768px) {
+            .page-title { font-size: 2.5rem; }
+            .scrolls-grid { grid-template-columns: 1fr; }
+            .modal-content { width: 95%; margin: 10% auto; }
+            .modal-header, .modal-body { padding: 1.5rem; }
+        }
+    </style>
+</head>
+<body>
+    <div class="status" id="status"></div>
+
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="index.html" class="logo">Aryavart.AI</a>
+            <ul class="nav-menu">
+                <li><a href="index.html" class="nav-link">Home</a></li>
+                <li><a href="ask.html" class="nav-link">Ask the Rishis</a></li>
+                <li><a href="paths.html" class="nav-link">Paths of Knowledge</a></li>
+                <li><a href="scrolls.html" class="nav-link active">Scrolls</a></li>
+                <li><a href="quests.html" class="nav-link">Quests</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <main class="main-content">
+        <div class="container">
+            <div class="page-header">
+                <h1 class="page-title">Wisdom Scrolls</h1>
+                <p class="page-subtitle">Ancient knowledge organized for modern seekers</p>
+            </div>
+
+            <div class="filters-section">
+                <div class="filter-buttons">
+                    <button class="filter-btn active" onclick="filterScrolls('all')">All Scrolls</button>
+                    <button class="filter-btn" onclick="filterScrolls('dharma')">Dharma</button>
+                    <button class="filter-btn" onclick="filterScrolls('ayurveda')">Ayurveda</button>
+                    <button class="filter-btn" onclick="filterScrolls('astronomy')">Astronomy</button>
+                    <button class="filter-btn" onclick="filterScrolls('philosophy')">Philosophy</button>
+                    <button class="filter-btn" onclick="filterScrolls('women')">Women in Vedas</button>
+                </div>
+            </div>
+
+            <div class="scrolls-grid" id="scrollsGrid">
+                <!-- Scrolls will be populated by JavaScript -->
+            </div>
+        </div>
+    </main>
+
+    <!-- Modal -->
+    <div id="scrollModal" class="modal" onclick="closeModal(event)">
+        <div class="modal-content">
+            <span class="close-modal" onclick="closeModal()">&times;</span>
+            <div class="modal-header">
+                <h2 id="modalTitle"></h2>
+                <div class="modal-category" id="modalCategory"></div>
+            </div>
+            <div class="modal-body">
+                <div class="modal-quote" id="modalQuote"></div>
+                <div class="modal-text" id="modalText"></div>
+                <div class="modal-source" id="modalSource"></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        console.log('📜 Wisdom Scrolls Loading...');
+
+        // Wisdom scrolls database
+        var wisdomScrolls = [
+            {
+                id: 1,
+                title: 'The Eternal Law of Dharma',
+                category: 'dharma',
+                quote: 'धर्मो रक्षति रक्षितः (Dharmo rakshati rakshitah)',
+                summary: 'Dharma protects those who protect dharma. Understanding righteousness as the foundation of cosmic order.',
+                fullText: 'Dharma is the cosmic principle that maintains order in the universe. It is not merely a set of rules, but the very fabric of existence that upholds truth, righteousness, and natural law.\n\nIn the Mahabharata, Yudhishthira declares that dharma is subtle and often difficult to understand. It varies according to time, place, and circumstances, yet its essence remains constant: the welfare of all beings.\n\nThe four pillars of dharma are Truth (Satya), Compassion (Daya), Austerity (Tapas), and Charity (Dana). When these are upheld, society flourishes in peace and prosperity.',
+                source: 'Mahabharata, Vana Parva'
+            },
+            {
+                id: 2,
+                title: 'Food as Medicine',
+                category: 'ayurveda',
+                quote: 'जब तक आहार ठीक है तब तक दवाई की जरूरत नहीं',
+                summary: 'When diet is correct, medicine is unnecessary. When diet is wrong, medicine is ineffective.',
+                fullText: 'Charaka Samhita teaches that food is the first medicine. Proper nutrition according to one\'s constitution (prakriti) and current state (vikriti) maintains health and prevents disease.\n\nThe six tastes (rasas) must be balanced: sweet (madhura), sour (amla), salty (lavana), pungent (katu), bitter (tikta), and astringent (kashaya). Each taste affects the doshas differently and serves specific therapeutic purposes.\n\nEating guidelines from Ayurveda:\n- Eat in a peaceful environment without distractions\n- Consume the largest meal when the sun is highest\n- Fill the stomach half with food, quarter with water, quarter empty\n- Eat according to your digestive fire (agni)',
+                source: 'Charaka Samhita, Sutra Sthana'
+            },
+            {
+                id: 3,
+                title: 'The Cosmic Dance',
+                category: 'astronomy',
+                quote: 'यस्मिन् सर्वाणि भूतानि भवन्ति अथ वा सूर्योदये',
+                summary: 'All beings emerge and exist in the cosmic rhythm of the sun. Ancient understanding of celestial influence.',
+                fullText: 'Vedic astronomy recognized the profound connection between celestial movements and life on Earth. The sun (Surya) was understood not just as a physical entity, but as the cosmic principle of time and consciousness.\n\nAryabhata calculated the Earth\'s circumference as 24,835 miles (remarkably close to the modern value of 24,901 miles). He explained that the Earth rotates on its axis, causing day and night - a revolutionary idea for his time.\n\nThe Surya Siddhanta describes complex calculations for planetary positions, eclipses, and the precession of equinoxes. These mathematical achievements demonstrate sophisticated understanding of celestial mechanics.',
+                source: 'Surya Siddhanta and Aryabhatiya'
+            },
+            {
+                id: 4,
+                title: 'The Unity of Existence',
+                category: 'philosophy',
+                quote: 'सर्वं खल्विदं ब्रह्म (Sarvam khalvidam brahma)',
+                summary: 'All this is indeed Brahman. The fundamental teaching of Vedanta about the unity of all existence.',
+                fullText: 'The Chandogya Upanishad proclaims the fundamental unity underlying apparent diversity. This is not mere philosophy, but a practical realization that transforms how we relate to ourselves and the world.\n\nWhen Uddalaka teaches his son Svetaketu about the subtle essence pervading everything, he uses the analogy of salt dissolved in water - invisible yet present everywhere. Similarly, Brahman is the invisible consciousness present in all forms.\n\nThis understanding dissolves the artificial barriers between self and other, between the individual and the cosmos. Suffering arises from the illusion of separation; joy comes from recognizing our essential unity with all life.',
+                source: 'Chandogya Upanishad 3.14.1'
+            },
+            {
+                id: 5,
+                title: 'Gargi: The Fearless Questioner',
+                category: 'women',
+                quote: 'गार्गी वाचक्नवी बहुधा प्रश्नैर्यज्ञवल्क्यम् अप्रच्छत्',
+                summary: 'Gargi Vachaknavi questioned Yajnavalkya extensively, demonstrating the high intellectual status of women in Vedic times.',
+                fullText: 'In the court of King Janaka, when the great sage Yajnavalkya declared himself the foremost among scholars, it was Gargi who rose to challenge him with her profound questions about the ultimate nature of reality.\n\nHer questions progressed systematically from the grosser to the subtler levels of existence: "On what is this world woven, warp and woof?" When Yajnavalkya answered "On air," she continued: "On what is air woven?" This continued until they reached the discussion of Brahman itself.\n\nGargi represents the ideal of intellectual fearlessness and spiritual seeking that was expected of both men and women in Vedic society. Her example shows that the highest philosophical discussions included women as equals.',
+                source: 'Brihadaranyaka Upanishad 3.6 and 3.8'
+            }
+        ];
+
+        var currentFilter = 'all';
+
+        // Show status function
+        function showStatus(message, type) {
+            var status = document.getElementById('status');
+            if (status) {
+                status.textContent = message;
+                status.className = 'status ' + type;
+                status.style.display = 'block';
+                
+                setTimeout(function() {
+                    status.style.display = 'none';
+                }, 3000);
+            }
+        }
+
+        // Format category function
+        function formatCategory(category) {
+            var categoryMap = {
+                'dharma': 'Dharma',
+                'ayurveda': 'Ayurveda',
+                'astronomy': 'Astronomy',
+                'philosophy': 'Philosophy',
+                'women': 'Women in Vedas'
+            };
+            return categoryMap[category] || category;
+        }
+
+        // Filter scrolls function
+        function filterScrolls(category) {
+            currentFilter = category;
+            
+            // Update active filter button
+            var filterButtons = document.querySelectorAll('.filter-btn');
+            for (var i = 0; i < filterButtons.length; i++) {
+                filterButtons[i].classList.remove('active');
+            }
+            event.target.classList.add('active');
+            
+            displayScrolls();
+        }
+
+        // Display scrolls function
+        function displayScrolls() {
+            var scrollsGrid = document.getElementById('scrollsGrid');
+            if (!scrollsGrid) return;
+            
+            var filteredScrolls = currentFilter === 'all' 
+                ? wisdomScrolls 
+                : wisdomScrolls.filter(function(scroll) { return scroll.category === currentFilter; });
+
+            scrollsGrid.innerHTML = '';
+
+            if (filteredScrolls.length === 0) {
+                scrollsGrid.innerHTML = '<div style="grid-column: 1 / -1; text-align: center; padding: 2rem; opacity: 0.7;"><p>No scrolls found for this category.</p></div>';
+                return;
+            }
+
+            for (var i = 0; i < filteredScrolls.length; i++) {
+                var scroll = filteredScrolls[i];
+                var scrollCard = createScrollCard(scroll);
+                scrollsGrid.appendChild(scrollCard);
+            }
+        }
+
+        // Create scroll card function
+        function createScrollCard(scroll) {
+            var card = document.createElement('div');
+            card.className = 'scroll-card';
+            card.onclick = function() { showModal(scroll); };
+            
+            card.innerHTML = 
+                '<div class="scroll-category">' + formatCategory(scroll.category) + '</div>' +
+                '<h3>' + scroll.title + '</h3>' +
+                '<div class="scroll-quote">"' + scroll.quote + '"</div>' +
+                '<p class="scroll-summary">' + scroll.summary + '</p>';
+            
+            return card;
+        }
+
+        // Show modal function
+        function showModal(scroll) {
+            var modal = document.getElementById('scrollModal');
+            var modalTitle = document.getElementById('modalTitle');
+            var modalCategory = document.getElementById('modalCategory');
+            var modalQuote = document.getElementById('modalQuote');
+            var modalText = document.getElementById('modalText');
+            var modalSource = document.getElementById('modalSource');
+
+            if (modalTitle) modalTitle.textContent = scroll.title;
+            if (modalCategory) modalCategory.textContent = formatCategory(scroll.category);
+            if (modalQuote) modalQuote.textContent = '"' + scroll.quote + '"';
+            if (modalText) modalText.textContent = scroll.fullText;
+            if (modalSource) modalSource.textContent = 'Source: ' + scroll.source;
+
+            if (modal) {
+                modal.style.display = 'block';
+                document.body.style.overflow = 'hidden';
+            }
+
+            showStatus('Reading: ' + scroll.title, 'info');
+        }
+
+        // Close modal function
+        function closeModal(event) {
+            var modal = document.getElementById('scrollModal');
+            if (!modal) return;
+            
+            // Close if clicking outside modal content or on close button
+            if (!event || event.target === modal || event.target.classList.contains('close-modal')) {
+                modal.style.display = 'none';
+                document.body.style.overflow = 'auto';
+            }
+        }
+
+        // Test features function
+        function testFeatures() {
+            console.log('🧪 Testing Wisdom Scrolls features...');
+            
+            var tests = {
+                scrollsData: wisdomScrolls.length > 0,
+                scrollsGrid: !!document.getElementById('scrollsGrid'),
+                filterButtons: document.querySelectorAll('.filter-btn').length > 0,
+                modal: !!document.getElementById('scrollModal')
+            };
+            
+            console.log('Test results:', tests);
+            
+            var allWorking = true;
+            for (var key in tests) {
+                if (!tests[key]) {
+                    allWorking = false;
+                    break;
+                }
+            }
+            
+            if (allWorking) {
+                console.log('✅ All Wisdom Scrolls features working!');
+                showStatus('Wisdom Scrolls are ready to explore! 📜', 'success');
+            } else {
+                console.warn('⚠️ Some features may not work properly');
+                showStatus('Some features may not work properly', 'error');
+            }
+        }
+
+        // Initialize function
+        function initialize() {
+            try {
+                console.log('🚀 Starting Wisdom Scrolls initialization...');
+                
+                displayScrolls();
+                
+                // Test after a short delay
+                setTimeout(testFeatures, 1000);
+                
+                console.log('✅ Wisdom Scrolls initialized successfully!');
+                
+            } catch (error) {
+                console.error('❌ Failed to initialize Wisdom Scrolls:', error);
+                showStatus('Error loading page. Please refresh.', 'error');
+            }
+        }
+
+        // Multiple initialization methods for maximum compatibility
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', initialize);
+        } else {
+            initialize();
+        }
+
+        // Fallback initialization
+        setTimeout(initialize, 500);
+        window.addEventListener('load', initialize);
+
+        // Keyboard support for modal
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                closeModal();
+            }
+        });
+
+        // Error handling
+        window.addEventListener('error', function(e) {
+            console.error('Page error:', e.error);
+            showStatus('An error occurred. Please refresh the page.', 'error');
+        });
+    </script>
+</body>
+</html>

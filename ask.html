@@ -1,0 +1,727 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ask the Rishis - Aryavart.AI</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Georgia', serif;
+            background: linear-gradient(135deg, #1a0e0a 0%, #2d1810 100%);
+            color: #f4e4bc;
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        .navbar {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background: rgba(26, 14, 10, 0.95);
+            z-index: 1000;
+            padding: 1rem 0;
+            border-bottom: 1px solid #d4af37;
+        }
+
+        .nav-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        .logo {
+            font-size: 1.8rem;
+            font-weight: bold;
+            color: #d4af37;
+            text-decoration: none;
+        }
+
+        .nav-menu {
+            display: flex;
+            list-style: none;
+            gap: 2rem;
+        }
+
+        .nav-link {
+            color: #f4e4bc;
+            text-decoration: none;
+            padding: 0.5rem 1rem;
+            border-radius: 5px;
+            transition: all 0.3s ease;
+        }
+
+        .nav-link:hover,
+        .nav-link.active {
+            background: #d4af37;
+            color: #1a0e0a;
+        }
+
+        .main-content {
+            padding: 120px 0 80px;
+            min-height: 100vh;
+        }
+
+        .page-header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .page-title {
+            font-size: 3.5rem;
+            color: #d4af37;
+            margin-bottom: 1rem;
+            text-shadow: 0 0 20px rgba(212, 175, 55, 0.3);
+        }
+
+        .page-subtitle {
+            font-size: 1.3rem;
+            opacity: 0.8;
+        }
+
+        .wisdom-interface {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 3rem;
+            margin-top: 3rem;
+        }
+
+        .traditional-interface {
+            background: rgba(244, 228, 188, 0.1);
+            padding: 3rem;
+            border-radius: 20px;
+            border: 1px solid rgba(212, 175, 55, 0.2);
+        }
+
+        .ai-chatbot-section {
+            background: rgba(244, 228, 188, 0.1);
+            padding: 3rem;
+            border-radius: 20px;
+            border: 1px solid rgba(212, 175, 55, 0.2);
+        }
+
+        .section-title {
+            font-size: 1.8rem;
+            color: #d4af37;
+            margin-bottom: 1.5rem;
+            text-align: center;
+            text-shadow: 0 0 10px rgba(212, 175, 55, 0.3);
+        }
+
+        .section-subtitle {
+            text-align: center;
+            color: #f4e4bc;
+            opacity: 0.8;
+            margin-bottom: 2rem;
+            font-style: italic;
+        }
+
+        .rishi-avatar {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .avatar-circle {
+            width: 100px;
+            height: 100px;
+            background: linear-gradient(135deg, #d4af37 0%, #cd7f32 100%);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 1rem;
+            font-size: 3rem;
+        }
+
+        .rishi-greeting {
+            font-style: italic;
+            font-size: 1rem;
+            opacity: 0.9;
+        }
+
+        .question-section {
+            margin-bottom: 2rem;
+        }
+
+        #questionInput {
+            width: 100%;
+            padding: 1.5rem;
+            border: 2px solid rgba(212, 175, 55, 0.3);
+            border-radius: 15px;
+            background: rgba(244, 228, 188, 0.1);
+            color: #f4e4bc;
+            font-family: 'Georgia', serif;
+            font-size: 1.1rem;
+            resize: vertical;
+            min-height: 120px;
+            margin-bottom: 1rem;
+        }
+
+        #questionInput:focus {
+            outline: none;
+            border-color: #d4af37;
+            box-shadow: 0 0 20px rgba(212, 175, 55, 0.2);
+        }
+
+        #questionInput::placeholder {
+            color: rgba(244, 228, 188, 0.6);
+        }
+
+        .btn {
+            padding: 1rem 2rem;
+            border: none;
+            border-radius: 50px;
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-family: 'Georgia', serif;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #d4af37 0%, #b8941f 100%);
+            color: #1a0e0a;
+            width: 100%;
+            margin-bottom: 2rem;
+        }
+
+        .btn-secondary {
+            background: transparent;
+            color: #d4af37;
+            border: 2px solid #d4af37;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+        }
+
+        .btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .example-questions {
+            margin-top: 1rem;
+        }
+
+        .example-questions p {
+            margin-bottom: 1rem;
+            opacity: 0.8;
+        }
+
+        .examples {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+        }
+
+        .example-q {
+            background: rgba(212, 175, 55, 0.2);
+            padding: 0.5rem 1rem;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 0.9rem;
+        }
+
+        .example-q:hover {
+            background: #d4af37;
+            color: #1a0e0a;
+        }
+
+        .answer-section {
+            display: none;
+            margin-top: 2rem;
+        }
+
+        .answer-container {
+            background: rgba(139, 21, 56, 0.1);
+            padding: 2rem;
+            border-radius: 15px;
+            border-left: 4px solid #d4af37;
+        }
+
+        .response-header {
+            margin-bottom: 1rem;
+        }
+
+        .rishi-name {
+            font-size: 1.2rem;
+            color: #d4af37;
+            font-weight: bold;
+        }
+
+        .answer-text {
+            font-size: 1.1rem;
+            line-height: 1.8;
+            margin-bottom: 1.5rem;
+            white-space: pre-line;
+        }
+
+        /* Chatbot Styling */
+        .chatbot-container {
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+            border: 2px solid rgba(212, 175, 55, 0.3);
+            background: rgba(244, 228, 188, 0.05);
+        }
+
+        .chatbot-container iframe {
+            width: 100%;
+            height: 500px;
+            border: none;
+            border-radius: 15px;
+        }
+
+        .chatbot-note {
+            text-align: center;
+            font-size: 0.9rem;
+            color: #cd7f32;
+            margin-top: 1rem;
+            font-style: italic;
+        }
+
+        .status {
+            position: fixed;
+            top: 80px;
+            right: 20px;
+            padding: 1rem;
+            border-radius: 10px;
+            color: white;
+            font-weight: bold;
+            z-index: 2000;
+            display: none;
+        }
+
+        .status.success { background: #355e3b; }
+        .status.error { background: #8b1538; }
+        .status.info { background: #d4af37; color: #1a0e0a; }
+
+        .loading {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid rgba(212, 175, 55, 0.3);
+            border-radius: 50%;
+            border-top-color: #d4af37;
+            animation: spin 1s ease-in-out infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        @media (max-width: 768px) {
+            .page-title { font-size: 2.5rem; }
+            .wisdom-interface { 
+                grid-template-columns: 1fr; 
+                gap: 2rem;
+            }
+            .traditional-interface, .ai-chatbot-section { 
+                padding: 2rem 1.5rem; 
+            }
+            .examples { flex-direction: column; }
+            .chatbot-container iframe {
+                height: 400px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="status" id="status"></div>
+
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="index.html" class="logo">Aryavart.AI</a>
+            <ul class="nav-menu">
+                <li><a href="index.html" class="nav-link">Home</a></li>
+                <li><a href="ask.html" class="nav-link active">Ask the Rishis</a></li>
+                <li><a href="paths.html" class="nav-link">Paths of Knowledge</a></li>
+                <li><a href="scrolls.html" class="nav-link">Scrolls</a></li>
+                <li><a href="quests.html" class="nav-link">Quests</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <main class="main-content">
+        <div class="container">
+            <div class="page-header">
+                <h1 class="page-title">Ask the Rishis</h1>
+                <p class="page-subtitle">Seek wisdom from the ancient sages of Bharat through traditional knowledge and AI</p>
+            </div>
+
+            <div class="wisdom-interface">
+                <!-- Traditional Interface -->
+                <div class="traditional-interface">
+                    <h2 class="section-title">🧙‍♂️ Traditional Wisdom</h2>
+                    <p class="section-subtitle">Experience ancient knowledge through our curated responses</p>
+                    
+                    <div class="rishi-avatar">
+                        <div class="avatar-circle">🧙‍♂️</div>
+                        <p class="rishi-greeting">The ancient rishis await your questions...</p>
+                    </div>
+
+                    <div class="question-section">
+                        <textarea 
+                            id="questionInput" 
+                            placeholder="Ask the Rishis about ancient Indian wisdom, philosophy, science, or spirituality..."
+                        ></textarea>
+                        <button id="askButton" class="btn btn-primary">
+                            <span id="buttonText">Seek Wisdom</span>
+                        </button>
+
+                        <div class="example-questions">
+                            <p>Try asking:</p>
+                            <div class="examples">
+                                <span class="example-q">What did Ayurveda say about food?</span>
+                                <span class="example-q">Who was Gargi Vachaknavi?</span>
+                                <span class="example-q">What is the meaning of karma?</span>
+                                <span class="example-q">How to achieve inner peace?</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div id="answerSection" class="answer-section">
+                        <div class="answer-container">
+                            <div class="response-header">
+                                <span class="rishi-name">रिषि (Rishi) speaks:</span>
+                            </div>
+                            <div id="answerText" class="answer-text"></div>
+                            <button id="askAnotherBtn" class="btn btn-secondary">Ask Another Question</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- AI Chatbot Section -->
+                <div class="ai-chatbot-section">
+                    <h2 class="section-title">🤖 AI Rishi Bot</h2>
+                    <p class="section-subtitle">Converse with our intelligent virtual sage powered by Microsoft AI</p>
+                    
+                    <div class="chatbot-container">
+                        <iframe 
+                            src="https://web.powerva.microsoft.com/environments/Default-993ebf67-a1b4-4124-9529-fe4ee2eb1f43/bots/cr4f1_rishiBot/webchat?__version__=2"
+                            title="Rishi Bot - AI Virtual Assistant"
+                            allow="microphone"
+                            style="width: 100%; height: 500px; border: none;">
+                        </iframe>
+                    </div>
+                    
+                    <p class="chatbot-note">
+                        💡 This AI assistant can provide real-time answers and engage in deeper conversations about ancient Indian wisdom
+                    </p>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        console.log('🧙‍♂️ Ask the Rishis with AI Integration Loading...');
+
+        // Wisdom database (keeping the original functionality)
+        const rishiResponses = [
+            {
+                keywords: ['ayurveda', 'food', 'diet', 'eating', 'nutrition'],
+                response: `In the ancient science of Ayurveda, food is considered medicine. The great sage Charaka taught us that proper digestion is the root of health.
+
+"When diet is wrong, medicine is of no use. When diet is correct, medicine is of no need."
+
+Food should be taken according to your dosha - Vata, Pitta, or Kapha. Eat warm, cooked foods. Take your largest meal when the sun is highest, for that is when your digestive fire (Agni) is strongest.
+
+Remember: "Mitaharam" - eat in moderation. Your stomach should be half-filled with food, one-quarter with water, and one-quarter left empty for proper digestion.`
+            },
+            {
+                keywords: ['gargi', 'woman', 'women', 'female', 'philosopher'],
+                response: `Gargi Vachaknavi was one of the greatest philosophers in ancient India, a brilliant woman who challenged even the wisest sages in debate.
+
+In the court of King Janaka, when Yajnavalkya declared himself the greatest scholar, it was Gargi who rose to question him. She asked him about the fundamental nature of reality, pushing him to the limits of human knowledge.
+
+"On what is this world woven, warp and woof?" she asked, leading to the profound realization of Brahman as the ultimate reality.
+
+Gargi represents the high status of women in Vedic society, where learning and wisdom were valued above all, regardless of gender. She reminds us that truth-seeking knows no boundaries.`
+            },
+            {
+                keywords: ['karma', 'action', 'dharma', 'duty'],
+                response: `Karma is the eternal law of cause and effect, beautifully explained in the Bhagavad Gita by Lord Krishna.
+
+"Karmanyevadhikaraste ma phaleshu kadachana" - You have the right to perform action, but never to the fruits of action.
+
+Every action creates an impression (sanskara) in the mind. Good actions purify the heart, while selfish actions bind us to suffering. The key is performing all actions as service to the Divine, without attachment to results.
+
+There are three types of karma:
+- Sanchita: Accumulated actions from past lives
+- Prarabdha: Actions bearing fruit in this life  
+- Kriyamana: Actions being performed now
+
+Free yourself through selfless action (Nishkama Karma) and devotion (Bhakti).`
+            },
+            {
+                keywords: ['peace', 'meditation', 'inner', 'calm', 'tranquil', 'serenity'],
+                response: `Inner peace comes from understanding your true nature, as taught in the Upanishads.
+
+The Katha Upanishad reveals: "When all desires of the heart are surrendered, the mortal becomes immortal and attains Brahman even in this life."
+
+Practice the eight limbs of Yoga as given by Patanjali:
+1. Yama (Restraints) - Ahimsa, Satya, Asteya, Brahmacharya, Aparigraha
+2. Niyama (Observances) - Saucha, Santosha, Tapas, Svadhyaya, Ishvara Pranidhana
+3. Asana (Posture)
+4. Pranayama (Breath Control)
+5. Pratyahara (Withdrawal of Senses)
+6. Dharana (Concentration)
+7. Dhyana (Meditation)  
+8. Samadhi (Union)
+
+"Yoga chitta vritti nirodha" - Yoga is the cessation of fluctuations of the mind. In stillness, you find your eternal Self.`
+            }
+        ];
+
+        const fallbackResponses = [
+            "The ancient rishis remind us that some questions require deep contemplation. Meditate upon this, and understanding will dawn like the sunrise over the Himalayas.",
+            "Like the mighty Ganga that flows from Shiva's locks, wisdom flows to those who approach with humility and an open heart. Your question touches the depths of eternal truth.",
+            "In the sacred groves where rishis once meditated, such profound questions were pondered. The answer lies within - turn your attention inward through prayer and reflection."
+        ];
+
+        // Elements
+        let questionInput, askButton, buttonText, answerSection, answerText, askAnotherBtn;
+
+        function initializeElements() {
+            questionInput = document.getElementById('questionInput');
+            askButton = document.getElementById('askButton');
+            buttonText = document.getElementById('buttonText');
+            answerSection = document.getElementById('answerSection');
+            answerText = document.getElementById('answerText');
+            askAnotherBtn = document.getElementById('askAnotherBtn');
+        }
+
+        function showStatus(message, type) {
+            const status = document.getElementById('status');
+            if (status) {
+                status.textContent = message;
+                status.className = 'status ' + type;
+                status.style.display = 'block';
+                
+                setTimeout(function() {
+                    status.style.display = 'none';
+                }, 3000);
+            }
+        }
+
+        function setExampleQuestion(text) {
+            if (questionInput) {
+                questionInput.value = text;
+                questionInput.focus();
+            }
+        }
+
+        function generateResponse(question) {
+            const questionLower = question.toLowerCase();
+            
+            for (let responseObj of rishiResponses) {
+                for (let keyword of responseObj.keywords) {
+                    if (questionLower.includes(keyword)) {
+                        return responseObj.response;
+                    }
+                }
+            }
+            
+            return fallbackResponses[Math.floor(Math.random() * fallbackResponses.length)];
+        }
+
+        function typeWriter(text, element, speed) {
+            if (!element) return;
+            
+            element.textContent = '';
+            let i = 0;
+            
+            function type() {
+                if (i < text.length) {
+                    element.textContent += text.charAt(i);
+                    i++;
+                    setTimeout(type, speed || 30);
+                } else {
+                    if (askAnotherBtn) {
+                        askAnotherBtn.style.display = 'inline-block';
+                    }
+                }
+            }
+            
+            type();
+        }
+
+        function askQuestion() {
+            const question = questionInput ? questionInput.value.trim() : '';
+            
+            if (!question) {
+                showStatus('Please enter your question to seek wisdom from the rishis.', 'error');
+                return;
+            }
+
+            // Set loading state
+            if (askButton) askButton.disabled = true;
+            if (buttonText) buttonText.innerHTML = 'Consulting Rishis... <span class="loading"></span>';
+            if (questionInput) questionInput.disabled = true;
+
+            showStatus('The rishis are contemplating your question...', 'info');
+
+            // Simulate thinking time
+            setTimeout(function() {
+                try {
+                    const response = generateResponse(question);
+                    
+                    if (answerSection) {
+                        answerSection.style.display = 'block';
+                        answerSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                    }
+                    
+                    if (askAnotherBtn) {
+                        askAnotherBtn.style.display = 'none';
+                    }
+                    
+                    typeWriter(response, answerText, 30);
+                    
+                    // Reset button
+                    if (askButton) askButton.disabled = false;
+                    if (buttonText) buttonText.textContent = 'Seek Wisdom';
+                    if (questionInput) questionInput.disabled = false;
+                    
+                    showStatus('Wisdom received from the ancient rishis!', 'success');
+                    
+                } catch (error) {
+                    console.error('Error generating response:', error);
+                    showStatus('Error receiving wisdom. Please try again.', 'error');
+                    
+                    // Reset button
+                    if (askButton) askButton.disabled = false;
+                    if (buttonText) buttonText.textContent = 'Seek Wisdom';
+                    if (questionInput) questionInput.disabled = false;
+                }
+            }, 2000);
+        }
+
+        function resetForm() {
+            if (questionInput) {
+                questionInput.value = '';
+                questionInput.focus();
+            }
+            if (answerSection) {
+                answerSection.style.display = 'none';
+            }
+            if (askAnotherBtn) {
+                askAnotherBtn.style.display = 'none';
+            }
+        }
+
+        function setupEventListeners() {
+            // Ask button
+            if (askButton) {
+                askButton.addEventListener('click', askQuestion);
+            }
+
+            // Enter key
+            if (questionInput) {
+                questionInput.addEventListener('keydown', function(e) {
+                    if (e.key === 'Enter' && !e.shiftKey) {
+                        e.preventDefault();
+                        askQuestion();
+                    }
+                });
+            }
+
+            // Ask another button
+            if (askAnotherBtn) {
+                askAnotherBtn.addEventListener('click', resetForm);
+            }
+
+            // Example questions
+            const examples = document.querySelectorAll('.example-q');
+            examples.forEach(function(example) {
+                example.addEventListener('click', function() {
+                    setExampleQuestion(this.textContent);
+                });
+            });
+        }
+
+        function testFeatures() {
+            console.log('🧪 Testing Ask the Rishis with AI features...');
+            
+            const tests = {
+                questionInput: !!questionInput,
+                askButton: !!askButton,
+                answerSection: !!answerSection,
+                examples: document.querySelectorAll('.example-q').length > 0,
+                chatbot: document.querySelector('.chatbot-container iframe') !== null
+            };
+            
+            console.log('Test results:', tests);
+            
+            const allWorking = Object.values(tests).every(function(test) { return test; });
+            
+            if (allWorking) {
+                showStatus('Ask the Rishis with AI is ready! 🧙‍♂️🤖', 'success');
+                console.log('✅ All features working including AI chatbot!');
+            } else {
+                showStatus('Some features may not work properly', 'error');
+                console.log('⚠️ Some features may not work');
+            }
+        }
+
+        function initialize() {
+            try {
+                console.log('🚀 Initializing Ask the Rishis with AI...');
+                
+                initializeElements();
+                setupEventListeners();
+                
+                setTimeout(testFeatures, 1000);
+                
+                console.log('✅ Ask the Rishis with AI initialized successfully!');
+                
+            } catch (error) {
+                console.error('❌ Initialization error:', error);
+                showStatus('Error loading page. Please refresh.', 'error');
+            }
+        }
+
+        // Initialize when page loads
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', initialize);
+        } else {
+            initialize();
+        }
+
+        setTimeout(initialize, 500);
+        window.addEventListener('load', initialize);
+
+        // Monitor chatbot loading
+        window.addEventListener('load', function() {
+            const chatbotIframe = document.querySelector('.chatbot-container iframe');
+            if (chatbotIframe) {
+                chatbotIframe.onload = function() {
+                    console.log('✅ AI Rishi Bot loaded successfully!');
+                    showStatus('AI Rishi Bot is ready for conversation! 🤖', 'success');
+                };
+                
+                chatbotIframe.onerror = function() {
+                    console.error('❌ Failed to load AI Rishi Bot');
+                    showStatus('AI Rishi Bot failed to load. Please try refreshing.', 'error');
+                };
+            }
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,15 @@
+# Netlify redirects file for multi-page application
+# Handle direct access to pages
+/ask.html /ask.html 200
+/paths.html /paths.html 200
+/scrolls.html /scrolls.html 200
+/quests.html /quests.html 200
+
+# Handle clean URLs (optional)
+/ask /ask.html 200
+/paths /paths.html 200
+/scrolls /scrolls.html 200
+/quests /quests.html 200
+
+# Fallback for any other routes to home page
+/* /index.html 200

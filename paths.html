@@ -1,0 +1,683 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Paths of Knowledge - Aryavart.AI</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Georgia', serif;
+            background: linear-gradient(135deg, #1a0e0a 0%, #2d1810 100%);
+            color: #f4e4bc;
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        .navbar {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background: rgba(26, 14, 10, 0.95);
+            z-index: 1000;
+            padding: 1rem 0;
+            border-bottom: 1px solid #d4af37;
+        }
+
+        .nav-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        .logo {
+            font-size: 1.8rem;
+            font-weight: bold;
+            color: #d4af37;
+            text-decoration: none;
+        }
+
+        .nav-menu {
+            display: flex;
+            list-style: none;
+            gap: 2rem;
+        }
+
+        .nav-link {
+            color: #f4e4bc;
+            text-decoration: none;
+            padding: 0.5rem 1rem;
+            border-radius: 5px;
+            transition: all 0.3s ease;
+        }
+
+        .nav-link:hover,
+        .nav-link.active {
+            background: #d4af37;
+            color: #1a0e0a;
+        }
+
+        .main-content {
+            padding: 120px 0 80px;
+            min-height: 100vh;
+        }
+
+        .page-header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .page-title {
+            font-size: 3.5rem;
+            color: #d4af37;
+            margin-bottom: 1rem;
+            text-shadow: 0 0 20px rgba(212, 175, 55, 0.3);
+        }
+
+        .page-subtitle {
+            font-size: 1.3rem;
+            opacity: 0.8;
+        }
+
+        .timeline-container {
+            max-width: 800px;
+            margin: 0 auto;
+            position: relative;
+        }
+
+        .timeline {
+            position: relative;
+        }
+
+        .timeline-line {
+            position: absolute;
+            left: 50%;
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background: linear-gradient(to bottom, #d4af37, #cd7f32);
+            transform: translateX(-50%);
+        }
+
+        .timeline-item {
+            position: relative;
+            margin: 3rem 0;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .timeline-item:hover {
+            transform: scale(1.02);
+        }
+
+        .timeline-marker {
+            position: absolute;
+            left: 50%;
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, #d4af37 0%, #cd7f32 100%);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transform: translateX(-50%);
+            z-index: 2;
+            font-size: 1.5rem;
+        }
+
+        .timeline-content {
+            background: rgba(244, 228, 188, 0.1);
+            padding: 2rem;
+            border-radius: 15px;
+            border: 1px solid rgba(212, 175, 55, 0.2);
+            width: 45%;
+            position: relative;
+        }
+
+        .timeline-item:nth-child(odd) .timeline-content {
+            margin-left: 55%;
+        }
+
+        .timeline-item:nth-child(even) .timeline-content {
+            margin-right: 55%;
+        }
+
+        .timeline-content h3 {
+            color: #d4af37;
+            margin-bottom: 0.5rem;
+            font-size: 1.4rem;
+        }
+
+        .timeline-date {
+            color: #cd7f32;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
+        .timeline-content p {
+            opacity: 0.9;
+        }
+
+        .era-details {
+            display: none;
+            margin-top: 3rem;
+            background: rgba(244, 228, 188, 0.1);
+            padding: 3rem;
+            border-radius: 20px;
+            border: 1px solid rgba(212, 175, 55, 0.2);
+            position: relative;
+        }
+
+        .close-btn {
+            position: absolute;
+            top: 1rem;
+            right: 1.5rem;
+            background: none;
+            border: none;
+            color: #d4af37;
+            font-size: 2rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .close-btn:hover {
+            color: #ff8c42;
+            transform: scale(1.1);
+        }
+
+        .era-cards-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .era-card {
+            background: rgba(212, 175, 55, 0.1);
+            padding: 2rem;
+            border-radius: 15px;
+            border: 1px solid rgba(212, 175, 55, 0.3);
+            transition: all 0.3s ease;
+        }
+
+        .era-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+        }
+
+        .era-card-header {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .era-card-icon {
+            font-size: 2rem;
+        }
+
+        .era-card h4 {
+            color: #d4af37;
+            margin: 0;
+            font-size: 1.3rem;
+        }
+
+        .era-card-description {
+            margin-bottom: 1rem;
+            opacity: 0.9;
+            line-height: 1.6;
+        }
+
+        .era-card-details {
+            display: none;
+            opacity: 0.8;
+            line-height: 1.6;
+            margin-bottom: 1rem;
+            padding-top: 1rem;
+            border-top: 1px solid rgba(212, 175, 55, 0.2);
+        }
+
+        .learn-more-btn {
+            background: #d4af37;
+            color: #1a0e0a;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 500;
+        }
+
+        .learn-more-btn:hover {
+            background: #b8941f;
+            transform: translateY(-1px);
+        }
+
+        .status {
+            position: fixed;
+            top: 80px;
+            right: 20px;
+            padding: 1rem;
+            border-radius: 10px;
+            color: white;
+            font-weight: bold;
+            z-index: 2000;
+            display: none;
+        }
+
+        .status.success { background: #355e3b; }
+        .status.error { background: #8b1538; }
+        .status.info { background: #d4af37; color: #1a0e0a; }
+
+        @media (max-width: 768px) {
+            .page-title { font-size: 2.5rem; }
+            
+            .timeline-line {
+                left: 30px;
+            }
+            
+            .timeline-marker {
+                left: 30px;
+                width: 50px;
+                height: 50px;
+                transform: none;
+            }
+            
+            .timeline-content {
+                width: auto;
+                margin-left: 80px !important;
+                margin-right: 0 !important;
+            }
+            
+            .timeline-item:nth-child(even) .timeline-content {
+                margin-left: 80px !important;
+            }
+            
+            .era-details {
+                padding: 2rem 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="status" id="status"></div>
+
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="index.html" class="logo">Aryavart.AI</a>
+            <ul class="nav-menu">
+                <li><a href="index.html" class="nav-link">Home</a></li>
+                <li><a href="ask.html" class="nav-link">Ask the Rishis</a></li>
+                <li><a href="paths.html" class="nav-link active">Paths of Knowledge</a></li>
+                <li><a href="scrolls.html" class="nav-link">Scrolls</a></li>
+                <li><a href="quests.html" class="nav-link">Quests</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <main class="main-content">
+        <div class="container">
+            <div class="page-header">
+                <h1 class="page-title">Paths of Knowledge</h1>
+                <p class="page-subtitle">Journey through the golden ages of Indian intellectual heritage</p>
+            </div>
+
+            <div class="timeline-container">
+                <div class="timeline">
+                    <div class="timeline-line"></div>
+                    
+                    <div class="timeline-item" onclick="showEraDetails('vedic')">
+                        <div class="timeline-marker">🕉️</div>
+                        <div class="timeline-content">
+                            <h3>Vedic Period</h3>
+                            <p class="timeline-date">1500 - 500 BCE</p>
+                            <p>The foundation of Indian philosophy and spiritual thought</p>
+                        </div>
+                    </div>
+
+                    <div class="timeline-item" onclick="showEraDetails('buddhist')">
+                        <div class="timeline-marker">☸️</div>
+                        <div class="timeline-content">
+                            <h3>Buddhist Period</h3>
+                            <p class="timeline-date">500 BCE - 500 CE</p>
+                            <p>Era of enlightenment and philosophical discourse</p>
+                        </div>
+                    </div>
+
+                    <div class="timeline-item" onclick="showEraDetails('gupta')">
+                        <div class="timeline-marker">🏛️</div>
+                        <div class="timeline-content">
+                            <h3>Gupta Age</h3>
+                            <p class="timeline-date">320 - 550 CE</p>
+                            <p>The Golden Age of science, mathematics, and arts</p>
+                        </div>
+                    </div>
+
+                    <div class="timeline-item" onclick="showEraDetails('bhakti')">
+                        <div class="timeline-marker">💝</div>
+                        <div class="timeline-content">
+                            <h3>Bhakti Period</h3>
+                            <p class="timeline-date">800 - 1700 CE</p>
+                            <p>Renaissance of devotional literature and philosophy</p>
+                        </div>
+                    </div>
+
+                    <div class="timeline-item" onclick="showEraDetails('modern')">
+                        <div class="timeline-marker">🌅</div>
+                        <div class="timeline-content">
+                            <h3>Modern Revival</h3>
+                            <p class="timeline-date">1947 - Present</p>
+                            <p>Rediscovering ancient wisdom in contemporary context</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="eraDetails" class="era-details">
+                <button class="close-btn" onclick="closeEraDetails()">&times;</button>
+                <h2 id="eraTitle"></h2>
+                <div id="eraCards" class="era-cards-grid"></div>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        console.log('⏳ Paths of Knowledge Loading...');
+
+        // Era data - using var for maximum compatibility
+        var eraData = {
+            vedic: {
+                title: 'Vedic Period (1500 - 500 BCE)',
+                cards: [
+                    {
+                        title: 'The Four Vedas',
+                        description: 'Sacred hymns and mantras revealed to ancient seers through deep meditation.',
+                        icon: '📿',
+                        details: 'The Vedas form the foundation of Hindu philosophy and are considered eternal knowledge.'
+                    },
+                    {
+                        title: 'Upanishads',
+                        description: 'Philosophical dialogues exploring the nature of reality and the Self.',
+                        icon: '🧘‍♂️',
+                        details: 'The principal Upanishads provide profound insights into consciousness and meditation.'
+                    },
+                    {
+                        title: 'Yajna Rituals',
+                        description: 'Sophisticated fire ceremonies harmonizing cosmic and earthly energies.',
+                        icon: '🔥',
+                        details: 'Yajnas were scientific practices involving precise mantras and geometric calculations.'
+                    }
+                ]
+            },
+            buddhist: {
+                title: 'Buddhist Period (500 BCE - 500 CE)',
+                cards: [
+                    {
+                        title: 'Buddha\'s Middle Path',
+                        description: 'Revolutionary approach to ending suffering through balanced living.',
+                        icon: '☸️',
+                        details: 'The Noble Eightfold Path provides practical guidance for ethical living.'
+                    },
+                    {
+                        title: 'Nalanda University',
+                        description: 'World\'s first residential international university.',
+                        icon: '🏛️',
+                        details: 'Nalanda housed over 10,000 students and pioneered structured higher education.'
+                    },
+                    {
+                        title: 'Vipassana Meditation',
+                        description: 'Insight meditation for developing clear awareness.',
+                        icon: '🪷',
+                        details: 'Vipassana means "to see things as they really are" through direct experience.'
+                    }
+                ]
+            },
+            gupta: {
+                title: 'Gupta Age (320 - 550 CE)',
+                cards: [
+                    {
+                        title: 'Aryabhata\'s Contributions',
+                        description: 'Revolutionary mathematician who calculated Earth\'s circumference.',
+                        icon: '🌌',
+                        details: 'Aryabhata calculated the value of π and the length of the solar year with remarkable accuracy.'
+                    },
+                    {
+                        title: 'Ayurvedic Medicine',
+                        description: 'Comprehensive medical system by Charaka and Sushruta.',
+                        icon: '🌿',
+                        details: 'Sushruta Samhita describes over 300 surgical procedures and 120 surgical instruments.'
+                    },
+                    {
+                        title: 'Classical Literature',
+                        description: 'Masterpieces by Kalidasa combining artistic excellence with philosophy.',
+                        icon: '📚',
+                        details: 'Kalidasa\'s works are considered pinnacles of world literature.'
+                    }
+                ]
+            },
+            bhakti: {
+                title: 'Bhakti Period (800 - 1700 CE)',
+                cards: [
+                    {
+                        title: 'Sant Kabir',
+                        description: 'Mystical poet who transcended religious boundaries.',
+                        icon: '🎵',
+                        details: 'Kabir\'s dohas use simple language to convey profound spiritual truths.'
+                    },
+                    {
+                        title: 'Mirabai',
+                        description: 'Princess who renounced worldly life for devotion to Krishna.',
+                        icon: '💝',
+                        details: 'Mirabai\'s poetry exemplifies pure bhakti where ego dissolves in divine love.'
+                    },
+                    {
+                        title: 'Guru Nanak',
+                        description: 'Founder of Sikhism promoting equality and social justice.',
+                        icon: '🌅',
+                        details: 'Guru Nanak\'s teachings promoted religious harmony and social equality.'
+                    }
+                ]
+            },
+            modern: {
+                title: 'Modern Revival (1947 - Present)',
+                cards: [
+                    {
+                        title: 'Scientific Validation',
+                        description: 'Modern research confirms ancient yogic practices.',
+                        icon: '🧬',
+                        details: 'Neuroscience reveals how meditation literally rewires the brain.'
+                    },
+                    {
+                        title: 'Digital Preservation',
+                        description: 'Technology-driven efforts to preserve ancient texts.',
+                        icon: '💻',
+                        details: 'Digital libraries ensure ancient wisdom remains available for future generations.'
+                    },
+                    {
+                        title: 'Global Renaissance',
+                        description: 'Worldwide interest in Indian philosophy and practices.',
+                        icon: '🌍',
+                        details: 'Indian spiritual traditions influence global movements in health and education.'
+                    }
+                ]
+            }
+        };
+
+        // Show status function
+        function showStatus(message, type) {
+            var status = document.getElementById('status');
+            if (status) {
+                status.textContent = message;
+                status.className = 'status ' + type;
+                status.style.display = 'block';
+                
+                setTimeout(function() {
+                    status.style.display = 'none';
+                }, 3000);
+            }
+        }
+
+        // Show era details function
+        function showEraDetails(era) {
+            try {
+                console.log('📚 Showing details for era:', era);
+                
+                var data = eraData[era];
+                if (!data) {
+                    console.error('Era data not found:', era);
+                    return;
+                }
+
+                var eraDetails = document.getElementById('eraDetails');
+                var eraTitle = document.getElementById('eraTitle');
+                var eraCards = document.getElementById('eraCards');
+
+                if (!eraDetails || !eraTitle || !eraCards) {
+                    console.error('Era detail elements not found');
+                    return;
+                }
+
+                // Update title
+                eraTitle.textContent = data.title;
+
+                // Clear and populate cards
+                eraCards.innerHTML = '';
+                
+                for (var i = 0; i < data.cards.length; i++) {
+                    var card = data.cards[i];
+                    var cardElement = createEraCard(card);
+                    eraCards.appendChild(cardElement);
+                }
+
+                // Show details
+                eraDetails.style.display = 'block';
+                eraDetails.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                
+                showStatus('Exploring ' + data.title, 'info');
+                
+                console.log('✅ Era details displayed successfully');
+            } catch (error) {
+                console.error('Error showing era details:', error);
+                showStatus('Error loading era details', 'error');
+            }
+        }
+
+        // Create era card function
+        function createEraCard(card) {
+            var cardDiv = document.createElement('div');
+            cardDiv.className = 'era-card';
+            
+            cardDiv.innerHTML = 
+                '<div class="era-card-header">' +
+                    '<span class="era-card-icon">' + card.icon + '</span>' +
+                    '<h4>' + card.title + '</h4>' +
+                '</div>' +
+                '<p class="era-card-description">' + card.description + '</p>' +
+                '<div class="era-card-details" style="display: none;">' +
+                    '<p>' + (card.details || '') + '</p>' +
+                '</div>' +
+                '<button class="learn-more-btn" onclick="toggleCardDetails(this)">Learn More</button>';
+
+            return cardDiv;
+        }
+
+        // Toggle card details function
+        function toggleCardDetails(button) {
+            var card = button.parentElement;
+            var details = card.querySelector('.era-card-details');
+            
+            if (details.style.display === 'none') {
+                details.style.display = 'block';
+                button.textContent = 'Show Less';
+            } else {
+                details.style.display = 'none';
+                button.textContent = 'Learn More';
+            }
+        }
+
+        // Close era details function
+        function closeEraDetails() {
+            var eraDetails = document.getElementById('eraDetails');
+            if (eraDetails) {
+                eraDetails.style.display = 'none';
+            }
+        }
+
+        // Test features function
+        function testFeatures() {
+            console.log('🧪 Testing Paths of Knowledge features...');
+            
+            var tests = {
+                timelineItems: document.querySelectorAll('.timeline-item').length > 0,
+                eraData: Object.keys(eraData).length > 0,
+                eraDetails: !!document.getElementById('eraDetails')
+            };
+            
+            console.log('Test results:', tests);
+            
+            var allWorking = true;
+            for (var key in tests) {
+                if (!tests[key]) {
+                    allWorking = false;
+                    break;
+                }
+            }
+            
+            if (allWorking) {
+                console.log('✅ All Paths of Knowledge features working!');
+                showStatus('Timeline is ready to explore! ⏳', 'success');
+            } else {
+                console.warn('⚠️ Some features may not work properly');
+                showStatus('Some features may not work properly', 'error');
+            }
+        }
+
+        // Initialize function
+        function initialize() {
+            try {
+                console.log('🚀 Starting Paths of Knowledge initialization...');
+                
+                // Test after a short delay
+                setTimeout(testFeatures, 1000);
+                
+                console.log('✅ Paths of Knowledge initialized successfully!');
+                
+            } catch (error) {
+                console.error('❌ Failed to initialize Paths of Knowledge:', error);
+                showStatus('Error loading page. Please refresh.', 'error');
+            }
+        }
+
+        // Multiple initialization methods for maximum compatibility
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', initialize);
+        } else {
+            initialize();
+        }
+
+        // Fallback initialization
+        setTimeout(initialize, 500);
+        window.addEventListener('load', initialize);
+
+        // Error handling
+        window.addEventListener('error', function(e) {
+            console.error('Page error:', e.error);
+            showStatus('An error occurred. Please refresh the page.', 'error');
+        });
+    </script>
+</body>
+</html>

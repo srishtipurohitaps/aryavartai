@@ -1,0 +1,839 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sacred Quests - Aryavart.AI</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Georgia', serif;
+            background: linear-gradient(135deg, #1a0e0a 0%, #2d1810 100%);
+            color: #f4e4bc;
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        .navbar {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background: rgba(26, 14, 10, 0.95);
+            z-index: 1000;
+            padding: 1rem 0;
+            border-bottom: 1px solid #d4af37;
+        }
+
+        .nav-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        .logo {
+            font-size: 1.8rem;
+            font-weight: bold;
+            color: #d4af37;
+            text-decoration: none;
+        }
+
+        .nav-menu {
+            display: flex;
+            list-style: none;
+            gap: 2rem;
+        }
+
+        .nav-link {
+            color: #f4e4bc;
+            text-decoration: none;
+            padding: 0.5rem 1rem;
+            border-radius: 5px;
+            transition: all 0.3s ease;
+        }
+
+        .nav-link:hover,
+        .nav-link.active {
+            background: #d4af37;
+            color: #1a0e0a;
+        }
+
+        .main-content {
+            padding: 120px 0 80px;
+            min-height: 100vh;
+            position: relative;
+        }
+
+        .page-header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .page-title {
+            font-size: 3.5rem;
+            color: #d4af37;
+            margin-bottom: 1rem;
+            text-shadow: 0 0 20px rgba(212, 175, 55, 0.3);
+        }
+
+        .page-subtitle {
+            font-size: 1.3rem;
+            opacity: 0.8;
+        }
+
+        .temple-bell {
+            position: fixed;
+            top: 50%;
+            right: 2rem;
+            font-size: 2rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            z-index: 100;
+            background: rgba(212, 175, 55, 0.2);
+            padding: 1rem;
+            border-radius: 50%;
+        }
+
+        .temple-bell:hover {
+            transform: scale(1.2) rotate(15deg);
+            background: rgba(212, 175, 55, 0.4);
+        }
+
+        .quests-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+
+        .quest-card {
+            background: rgba(244, 228, 188, 0.1);
+            padding: 2.5rem;
+            border-radius: 15px;
+            text-align: center;
+            border: 1px solid rgba(212, 175, 55, 0.2);
+            transition: all 0.3s ease;
+        }
+
+        .quest-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+        }
+
+        .quest-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+
+        .quest-card h3 {
+            color: #d4af37;
+            margin-bottom: 1rem;
+        }
+
+        .quest-card p {
+            margin-bottom: 2rem;
+            opacity: 0.9;
+        }
+
+        .btn {
+            padding: 1rem 2rem;
+            border: none;
+            border-radius: 50px;
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-family: 'Georgia', serif;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #d4af37 0%, #b8941f 100%);
+            color: #1a0e0a;
+        }
+
+        .btn-secondary {
+            background: transparent;
+            color: #d4af37;
+            border: 2px solid #d4af37;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+        }
+
+        .btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .game-container {
+            display: none;
+            background: rgba(244, 228, 188, 0.1);
+            padding: 3rem;
+            border-radius: 20px;
+            border: 1px solid rgba(212, 175, 55, 0.2);
+            margin-top: 3rem;
+        }
+
+        .game-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+        }
+
+        .game-header h2 {
+            color: #d4af37;
+        }
+
+        .score-display {
+            font-size: 1.2rem;
+            font-weight: 600;
+        }
+
+        .question-container {
+            background: rgba(212, 175, 55, 0.1);
+            padding: 2rem;
+            border-radius: 15px;
+            margin-bottom: 2rem;
+            text-align: center;
+        }
+
+        .question-container p {
+            font-size: 1.2rem;
+            line-height: 1.6;
+        }
+
+        .answer-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+        }
+
+        .answer-btn {
+            padding: 1rem 2rem;
+            border: 2px solid #d4af37;
+            background: transparent;
+            color: #d4af37;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 1.1rem;
+            font-weight: 500;
+        }
+
+        .answer-btn:hover {
+            background: #d4af37;
+            color: #1a0e0a;
+            transform: translateY(-2px);
+        }
+
+        .truth-btn {
+            border-color: #355e3b;
+            color: #355e3b;
+        }
+
+        .truth-btn:hover {
+            background: #355e3b;
+            color: white;
+        }
+
+        .myth-btn {
+            border-color: #8b1538;
+            color: #8b1538;
+        }
+
+        .myth-btn:hover {
+            background: #8b1538;
+            color: white;
+        }
+
+        .feedback {
+            display: none;
+            padding: 1rem;
+            border-radius: 10px;
+            text-align: center;
+            margin-bottom: 2rem;
+            font-weight: 500;
+        }
+
+        .feedback.correct {
+            background: rgba(53, 94, 59, 0.2);
+            color: #355e3b;
+            border: 1px solid #355e3b;
+        }
+
+        .feedback.incorrect {
+            background: rgba(139, 21, 56, 0.2);
+            color: #8b1538;
+            border: 1px solid #8b1538;
+        }
+
+        .game-controls {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .hidden-fact {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.9);
+            z-index: 2000;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .fact-container {
+            background: linear-gradient(135deg, #f4e4bc 0%, #e6d3a3 100%);
+            padding: 3rem;
+            border-radius: 20px;
+            max-width: 600px;
+            text-align: center;
+            color: #2c1810;
+            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.4);
+        }
+
+        .fact-container h3 {
+            color: #8b1538;
+            margin-bottom: 1.5rem;
+        }
+
+        .status {
+            position: fixed;
+            top: 80px;
+            right: 20px;
+            padding: 1rem;
+            border-radius: 10px;
+            color: white;
+            font-weight: bold;
+            z-index: 2000;
+            display: none;
+        }
+
+        .status.success { background: #355e3b; }
+        .status.error { background: #8b1538; }
+        .status.info { background: #d4af37; color: #1a0e0a; }
+
+        @media (max-width: 768px) {
+            .page-title { font-size: 2.5rem; }
+            .quests-grid { grid-template-columns: 1fr; }
+            .temple-bell { right: 1rem; top: auto; bottom: 2rem; }
+            .game-header { flex-direction: column; gap: 1rem; text-align: center; }
+            .answer-buttons { flex-direction: column; align-items: center; }
+        }
+    </style>
+</head>
+<body>
+    <div class="status" id="status"></div>
+
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="index.html" class="logo">Aryavart.AI</a>
+            <ul class="nav-menu">
+                <li><a href="index.html" class="nav-link">Home</a></li>
+                <li><a href="ask.html" class="nav-link">Ask the Rishis</a></li>
+                <li><a href="paths.html" class="nav-link">Paths of Knowledge</a></li>
+                <li><a href="scrolls.html" class="nav-link">Scrolls</a></li>
+                <li><a href="quests.html" class="nav-link active">Quests</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <main class="main-content">
+        <div class="container">
+            <div class="page-header">
+                <h1 class="page-title">Sacred Quests</h1>
+                <p class="page-subtitle">Test your knowledge of ancient Indian wisdom</p>
+            </div>
+
+            <div class="temple-bell" onclick="showHiddenFact()" title="Ring the Sacred Bell">
+                🔔
+            </div>
+
+            <div class="hidden-fact" id="hiddenFact">
+                <div class="fact-container">
+                    <h3>🌟 Hidden Wisdom Revealed 🌟</h3>
+                    <p id="factText"></p>
+                    <button onclick="closeHiddenFact()" class="btn btn-secondary">Close</button>
+                </div>
+            </div>
+
+            <div class="quests-grid">
+                <div class="quest-card">
+                    <div class="quest-icon">🎯</div>
+                    <h3>Truth or Myth</h3>
+                    <p>Test your knowledge of ancient Indian facts and legends</p>
+                    <button class="btn btn-primary" onclick="startTruthMythGame()">Begin Quest</button>
+                </div>
+
+                <div class="quest-card">
+                    <div class="quest-icon">🔤</div>
+                    <h3>Decode the Mantra</h3>
+                    <p>Match Sanskrit words with their meanings</p>
+                    <button class="btn btn-primary" onclick="startMantraGame()">Begin Quest</button>
+                </div>
+            </div>
+
+            <!-- Truth or Myth Game -->
+            <div id="truthMythGame" class="game-container">
+                <div class="game-header">
+                    <h2>Truth or Myth?</h2>
+                    <div class="score-display">
+                        Score: <span id="truthMythScore">0</span>/5
+                    </div>
+                </div>
+                
+                <div class="question-container">
+                    <p id="truthMythQuestion"></p>
+                </div>
+                
+                <div class="answer-buttons">
+                    <button class="answer-btn truth-btn" onclick="answerTruthMyth(true)">Truth</button>
+                    <button class="answer-btn myth-btn" onclick="answerTruthMyth(false)">Myth</button>
+                </div>
+                
+                <div id="truthMythFeedback" class="feedback"></div>
+                
+                <div class="game-controls">
+                    <button id="nextTruthMythBtn" class="btn btn-secondary" onclick="nextTruthMythQuestion()" style="display: none;">Next Question</button>
+                    <button class="btn btn-secondary" onclick="endTruthMythGame()">End Game</button>
+                </div>
+            </div>
+
+            <!-- Decode Mantra Game -->
+            <div id="mantraGame" class="game-container">
+                <div class="game-header">
+                    <h2>Decode the Mantra</h2>
+                    <div class="score-display">
+                        Score: <span id="mantraScore">0</span>/5
+                    </div>
+                </div>
+                
+                <div style="text-align: center; margin-bottom: 2rem;">
+                    <h3 id="sanskritWord" style="color: #d4af37; font-size: 2.5rem; text-shadow: 0 0 10px rgba(212, 175, 55, 0.3);"></h3>
+                </div>
+                
+                <div id="meaningOptions" class="answer-buttons" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem;">
+                    <!-- Options will be populated by JavaScript -->
+                </div>
+                
+                <div id="mantraFeedback" class="feedback"></div>
+                
+                <div class="game-controls">
+                    <button id="nextMantraBtn" class="btn btn-secondary" onclick="nextMantraQuestion()" style="display: none;">Next Word</button>
+                    <button class="btn btn-secondary" onclick="endMantraGame()">End Game</button>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        console.log('🎯 Sacred Quests Loading...');
+
+        // Game data
+        var truthMythQuestions = [
+            {
+                question: "Ancient Indians knew that the Earth was round and calculated its circumference accurately.",
+                answer: true,
+                explanation: "Aryabhata (5th century CE) calculated Earth's circumference as 24,835 miles, very close to the actual 24,901 miles."
+            },
+            {
+                question: "The concept of zero was invented by the Arabs and brought to India.",
+                answer: false,
+                explanation: "Zero was invented in India by mathematicians like Brahmagupta (7th century CE) and later transmitted to the Arab world."
+            },
+            {
+                question: "Sushruta performed cataract surgery and plastic surgery over 2000 years ago.",
+                answer: true,
+                explanation: "The Sushruta Samhita describes over 300 surgical procedures including cataract removal and rhinoplasty."
+            },
+            {
+                question: "The game of chess originated in ancient India as Chaturanga.",
+                answer: true,
+                explanation: "Chaturanga, meaning 'four divisions of the military,' was the precursor to modern chess, invented in India around the 6th century CE."
+            },
+            {
+                question: "The decimal system was first used in ancient India.",
+                answer: true,
+                explanation: "The decimal place-value system with zero was developed in India and later transmitted to other civilizations."
+            }
+        ];
+
+        var sanskritWords = [
+            {
+                word: "अहिंसा (Ahimsa)",
+                meanings: ["Non-violence", "Anger", "Meditation", "Sacrifice"],
+                correct: 0,
+                explanation: "Ahimsa means non-violence or non-harm, the first principle of yoga and dharma."
+            },
+            {
+                word: "धर्म (Dharma)",
+                meanings: ["Wealth", "Righteousness", "Knowledge", "Power"],
+                correct: 1,
+                explanation: "Dharma means righteousness, moral law, or one's duty in life."
+            },
+            {
+                word: "योग (Yoga)",
+                meanings: ["Exercise", "Union", "Breathing", "Posture"],
+                correct: 1,
+                explanation: "Yoga means union or joining, specifically the union of individual consciousness with universal consciousness."
+            },
+            {
+                word: "कर्म (Karma)",
+                meanings: ["Fate", "Action", "Meditation", "Prayer"],
+                correct: 1,
+                explanation: "Karma means action or deed, and the law of cause and effect governing all actions."
+            },
+            {
+                word: "सत्य (Satya)",
+                meanings: ["Peace", "Truth", "Love", "Wisdom"],
+                correct: 1,
+                explanation: "Satya means truth, one of the fundamental principles of dharma."
+            }
+        ];
+
+        var hiddenFacts = [
+            "The word 'Guru' comes from 'Gu' (darkness) and 'Ru' (light) - one who leads from darkness to light.",
+            "Ancient Indian mathematicians used the concept of infinity (ananta) in their calculations thousands of years ago.",
+            "The Sanskrit word 'Namaste' means 'I bow to the divine in you' - recognizing the sacred in everyone.",
+            "The concept of 'Vasudhaiva Kutumbakam' (the world is one family) appears in ancient Indian texts.",
+            "The game of Snakes and Ladders originated in India as 'Moksha Patam' to teach moral lessons."
+        ];
+
+        // Game state
+        var gameState = {
+            truthMyth: {
+                currentQuestion: 0,
+                score: 0,
+                questions: []
+            },
+            mantra: {
+                currentQuestion: 0,
+                score: 0,
+                questions: []
+            }
+        };
+
+        // Show status function
+        function showStatus(message, type) {
+            var status = document.getElementById('status');
+            if (status) {
+                status.textContent = message;
+                status.className = 'status ' + type;
+                status.style.display = 'block';
+                
+                setTimeout(function() {
+                    status.style.display = 'none';
+                }, 3000);
+            }
+        }
+
+        // Hidden fact functions
+        function showHiddenFact() {
+            var randomFact = hiddenFacts[Math.floor(Math.random() * hiddenFacts.length)];
+            var factText = document.getElementById('factText');
+            var hiddenFact = document.getElementById('hiddenFact');
+            
+            if (factText) factText.textContent = randomFact;
+            if (hiddenFact) {
+                hiddenFact.style.display = 'flex';
+                showStatus('Sacred bell rings with ancient wisdom! 🔔', 'success');
+            }
+        }
+
+        function closeHiddenFact() {
+            var hiddenFact = document.getElementById('hiddenFact');
+            if (hiddenFact) {
+                hiddenFact.style.display = 'none';
+            }
+        }
+
+        // Truth or Myth Game Functions
+        function startTruthMythGame() {
+            gameState.truthMyth.currentQuestion = 0;
+            gameState.truthMyth.score = 0;
+            gameState.truthMyth.questions = truthMythQuestions.slice().sort(function() { return Math.random() - 0.5; });
+            
+            var game = document.getElementById('truthMythGame');
+            if (game) {
+                game.style.display = 'block';
+                game.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }
+            
+            showTruthMythQuestion();
+            showStatus('Truth or Myth game started!', 'info');
+        }
+
+        function showTruthMythQuestion() {
+            var state = gameState.truthMyth;
+            var question = state.questions[state.currentQuestion];
+            
+            var questionElement = document.getElementById('truthMythQuestion');
+            var scoreElement = document.getElementById('truthMythScore');
+            var feedbackElement = document.getElementById('truthMythFeedback');
+            var nextBtn = document.getElementById('nextTruthMythBtn');
+            
+            if (questionElement) questionElement.textContent = question.question;
+            if (scoreElement) scoreElement.textContent = state.score;
+            if (feedbackElement) feedbackElement.style.display = 'none';
+            if (nextBtn) nextBtn.style.display = 'none';
+            
+            // Enable answer buttons
+            var answerButtons = document.querySelectorAll('#truthMythGame .answer-btn');
+            for (var i = 0; i < answerButtons.length; i++) {
+                answerButtons[i].disabled = false;
+                answerButtons[i].style.opacity = '1';
+            }
+        }
+
+        function answerTruthMyth(userAnswer) {
+            var state = gameState.truthMyth;
+            var question = state.questions[state.currentQuestion];
+            var isCorrect = userAnswer === question.answer;
+            
+            if (isCorrect) {
+                state.score++;
+                var scoreElement = document.getElementById('truthMythScore');
+                if (scoreElement) scoreElement.textContent = state.score;
+            }
+            
+            // Show feedback
+            var feedbackElement = document.getElementById('truthMythFeedback');
+            if (feedbackElement) {
+                feedbackElement.innerHTML = '<strong>' + (isCorrect ? 'Correct!' : 'Incorrect!') + '</strong><br>' + question.explanation;
+                feedbackElement.className = 'feedback ' + (isCorrect ? 'correct' : 'incorrect');
+                feedbackElement.style.display = 'block';
+            }
+            
+            // Disable answer buttons
+            var answerButtons = document.querySelectorAll('#truthMythGame .answer-btn');
+            for (var i = 0; i < answerButtons.length; i++) {
+                answerButtons[i].disabled = true;
+                answerButtons[i].style.opacity = '0.6';
+            }
+            
+            // Show next button or end game
+            if (state.currentQuestion < 4) {
+                var nextBtn = document.getElementById('nextTruthMythBtn');
+                if (nextBtn) nextBtn.style.display = 'inline-block';
+            } else {
+                setTimeout(function() { endTruthMythGame(); }, 2000);
+            }
+        }
+
+        function nextTruthMythQuestion() {
+            gameState.truthMyth.currentQuestion++;
+            showTruthMythQuestion();
+        }
+
+        function endTruthMythGame() {
+            var score = gameState.truthMyth.score;
+            var game = document.getElementById('truthMythGame');
+            if (game) game.style.display = 'none';
+            
+            var message = score >= 4 ? '🌟 Excellent! You are truly wise!' : 
+                         score >= 3 ? '👍 Good work! Keep learning!' : 
+                         '📚 Keep exploring ancient wisdom!';
+            
+            showStatus('Quest Complete! Score: ' + score + '/5. ' + message, 'success');
+        }
+
+        // Mantra Game Functions
+        function startMantraGame() {
+            gameState.mantra.currentQuestion = 0;
+            gameState.mantra.score = 0;
+            gameState.mantra.questions = sanskritWords.slice().sort(function() { return Math.random() - 0.5; });
+            
+            var game = document.getElementById('mantraGame');
+            if (game) {
+                game.style.display = 'block';
+                game.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }
+            
+            showMantraQuestion();
+            showStatus('Decode the Mantra game started!', 'info');
+        }
+
+        function showMantraQuestion() {
+            var state = gameState.mantra;
+            var question = state.questions[state.currentQuestion];
+            
+            var wordElement = document.getElementById('sanskritWord');
+            var scoreElement = document.getElementById('mantraScore');
+            var feedbackElement = document.getElementById('mantraFeedback');
+            var nextBtn = document.getElementById('nextMantraBtn');
+            var optionsContainer = document.getElementById('meaningOptions');
+            
+            if (wordElement) wordElement.textContent = question.word;
+            if (scoreElement) scoreElement.textContent = state.score;
+            if (feedbackElement) feedbackElement.style.display = 'none';
+            if (nextBtn) nextBtn.style.display = 'none';
+            
+            // Create meaning options
+            if (optionsContainer) {
+                optionsContainer.innerHTML = '';
+                for (var i = 0; i < question.meanings.length; i++) {
+                    var btn = document.createElement('button');
+                    btn.textContent = question.meanings[i];
+                    btn.className = 'answer-btn';
+                    btn.onclick = (function(index) {
+                        return function() { selectMeaning(index); };
+                    })(i);
+                    optionsContainer.appendChild(btn);
+                }
+            }
+        }
+
+        function selectMeaning(selectedIndex) {
+            var state = gameState.mantra;
+            var question = state.questions[state.currentQuestion];
+            var isCorrect = selectedIndex === question.correct;
+            
+            if (isCorrect) {
+                state.score++;
+                var scoreElement = document.getElementById('mantraScore');
+                if (scoreElement) scoreElement.textContent = state.score;
+            }
+            
+            // Show feedback
+            var feedbackElement = document.getElementById('mantraFeedback');
+            if (feedbackElement) {
+                feedbackElement.innerHTML = '<strong>' + (isCorrect ? 'Correct!' : 'Incorrect!') + '</strong><br>' + question.explanation;
+                feedbackElement.className = 'feedback ' + (isCorrect ? 'correct' : 'incorrect');
+                feedbackElement.style.display = 'block';
+            }
+            
+            // Highlight correct answer and disable buttons
+            var optionsContainer = document.getElementById('meaningOptions');
+            if (optionsContainer) {
+                var buttons = optionsContainer.querySelectorAll('button');
+                for (var i = 0; i < buttons.length; i++) {
+                    buttons[i].disabled = true;
+                    buttons[i].style.opacity = '0.6';
+                    
+                    if (i === question.correct) {
+                        buttons[i].style.background = '#355e3b';
+                        buttons[i].style.color = 'white';
+                        buttons[i].style.opacity = '1';
+                    } else if (i === selectedIndex && !isCorrect) {
+                        buttons[i].style.background = '#8b1538';
+                        buttons[i].style.color = 'white';
+                        buttons[i].style.opacity = '1';
+                    }
+                }
+            }
+            
+            // Show next button or end game
+            if (state.currentQuestion < 4) {
+                var nextBtn = document.getElementById('nextMantraBtn');
+                if (nextBtn) nextBtn.style.display = 'inline-block';
+            } else {
+                setTimeout(function() { endMantraGame(); }, 2000);
+            }
+        }
+
+        function nextMantraQuestion() {
+            gameState.mantra.currentQuestion++;
+            showMantraQuestion();
+        }
+
+        function endMantraGame() {
+            var score = gameState.mantra.score;
+            var game = document.getElementById('mantraGame');
+            if (game) game.style.display = 'none';
+            
+            var message = score >= 4 ? '🌟 Excellent! You know Sanskrit well!' : 
+                         score >= 3 ? '👍 Good work! Keep learning!' : 
+                         '📚 Keep exploring Sanskrit wisdom!';
+            
+            showStatus('Quest Complete! Score: ' + score + '/5. ' + message, 'success');
+        }
+
+        // Test features function
+        function testFeatures() {
+            console.log('🧪 Testing Sacred Quests features...');
+            
+            var tests = {
+                templeBell: !!document.querySelector('.temple-bell'),
+                gameData: truthMythQuestions.length > 0 && sanskritWords.length > 0,
+                hiddenFacts: hiddenFacts.length > 0,
+                gameContainers: document.querySelectorAll('.game-container').length > 0
+            };
+            
+            console.log('Test results:', tests);
+            
+            var allWorking = true;
+            for (var key in tests) {
+                if (!tests[key]) {
+                    allWorking = false;
+                    break;
+                }
+            }
+            
+            if (allWorking) {
+                console.log('✅ All Sacred Quests features working!');
+                showStatus('Sacred Quests are ready to challenge you! 🎯', 'success');
+            } else {
+                console.warn('⚠️ Some features may not work properly');
+                showStatus('Some features may not work properly', 'error');
+            }
+        }
+
+        // Initialize function
+        function initialize() {
+            try {
+                console.log('🚀 Starting Sacred Quests initialization...');
+                
+                // Test after a short delay
+                setTimeout(testFeatures, 1000);
+                
+                console.log('✅ Sacred Quests initialized successfully!');
+                
+            } catch (error) {
+                console.error('❌ Failed to initialize Sacred Quests:', error);
+                showStatus('Error loading page. Please refresh.', 'error');
+            }
+        }
+
+        // Multiple initialization methods for maximum compatibility
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', initialize);
+        } else {
+            initialize();
+        }
+
+        // Fallback initialization
+        setTimeout(initialize, 500);
+        window.addEventListener('load', initialize);
+
+        // Error handling
+        window.addEventListener('error', function(e) {
+            console.error('Page error:', e.error);
+            showStatus('An error occurred. Please refresh the page.', 'error');
+        });
+    </script>
+</body>
+</html>
